@@ -1,0 +1,1 @@
+mysql> tee C:\Users\Lab1\Desktop\ICT-2204,DBMS LAB\Day-2.txt
