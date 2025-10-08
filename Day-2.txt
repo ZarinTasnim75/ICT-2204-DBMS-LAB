@@ -50,3 +50,167 @@ mysql> SHOW TABLES;
 +---------------------------+
 1 row in set (0.00 sec)
 
+mysql> DESC STUDENT;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| STUDENT_ID   | int          | YES  |     | NULL    |       |
+| STUDENT_NAME | varchar(100) | YES  |     | NULL    |       |
+| SESSION      | varchar(10)  | YES  |     | NULL    |       |
+| CGPA         | float(5,2)   | YES  |     | NULL    |       |
+| GENDER       | varchar(10)  | YES  |     | NULL    |       |
+| MOBILE_PHONE | varchar(15)  | YES  |     | NULL    |       |
+| EMAIL        | varchar(100) | YES  |     | NULL    |       |
+| DOB          | date         | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT NOT NULL, CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM CUST;
++---------+-----------+
+| CUST_ID | CUST_NAME |
++---------+-----------+
+|       1 | ASD       |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM CUST;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.cust' doesn't exist
+mysql> CREATE TABLE CUST(CUST_ID INT UNIQUE, CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.CUST_ID'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT , CUST_NAME VARCHAR(10),UNIQUE(CUST_ID));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.CUST_ID'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT , CUST_NAME VARCHAR(10), CONSTRAINT uc_student_id UNIQUE(CUST_ID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+ERROR 1146 (42S02): Table 'iit_14_th_batch.cust' doesn't exist
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+ERROR 1146 (42S02): Table 'iit_14_th_batch.cust' doesn't exist
+mysql> CREATE TABLE CUST(CUST_ID INT , CUST_NAME VARCHAR(10), CONSTRAINT uc_cust_id UNIQUE(CUST_ID));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CUST(CUST_ID,CUST_NAME) VALUES(1,'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.uc_cust_id'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(CUST_ID INT NOT NULL , CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE BOOK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(CUST_ID INT NOT NULL , CUST_NAME VARCHAR(10), UNIQUE(CUST_ID));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE BOOK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(BOOK_ID INT NOT NULL , BOOK_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(1,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(2,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(2,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DROP TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> DROP TABLE BOOK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(BOOK_ID INT PRIMARY KEY , BOOK_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+ERROR 1062 (23000): Duplicate entry '12' for key 'book.PRIMARY'
+mysql> CREATE TABLE BOOK(BOOK_ID INT , BOOK_NAME VARCHAR(10),PRIMARY KEY(BOOK_ID));
+ERROR 1050 (42S01): Table 'book' already exists
+mysql> DROP TABLE BOOK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(BOOK_ID INT , BOOK_NAME VARCHAR(10),PRIMARY KEY(BOOK_ID));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+ERROR 1062 (23000): Duplicate entry '12' for key 'book.PRIMARY'
+mysql> DROP TABLE BOOK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK(BOOK_ID INT , BOOK_NAME VARCHAR(10), CONSTRAINT it_book_id PRIMARY KEY(BOOK_ID));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+ERROR 1062 (23000): Duplicate entry '12' for key 'book.PRIMARY'
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(,'ABC');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ','ABC')' at line 1
+mysql> SHOW TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SHOW TABLE BOOK;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'BOOK' at line 1
+mysql> SELECT * FROM BOOK;
++---------+-----------+
+| BOOK_ID | BOOK_NAME |
++---------+-----------+
+|      12 | ABC       |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(,'ABC');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ','ABC')' at line 1
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(,'ABC');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ','ABC')' at line 1
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(12,'ABC');
+ERROR 1062 (23000): Duplicate entry '12' for key 'book.PRIMARY'
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(15,'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(16,'EFG');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK(BOOK_ID,BOOK_NAME) VALUES(17,'HIJ');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> notee
