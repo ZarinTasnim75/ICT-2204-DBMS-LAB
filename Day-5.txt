@@ -1,0 +1,503 @@
+mysql> use iit_14_th_batch;
+Database changed
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_iit_14_th_batch |
++---------------------------+
+| book                      |
+| student                   |
++---------------------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT 8 FROM BOOK;
++---+
+| 8 |
++---+
+| 8 |
+| 8 |
+| 8 |
+| 8 |
+| 8 |
++---+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK;
++---------+-----------+
+| BOOK_ID | BOOK_NAME |
++---------+-----------+
+|       1 | AB        |
+|       3 | AB        |
+|       4 | AB        |
+|       5 | AB        |
+|       6 | CD        |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
+Empty set (0.01 sec)
+
+mysql> DROP TABLE STUDENT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE STUDENT(STUDENT_ID INT,STUDENT_NAME VARCHAR(20),STUDENT_CODE VARCHAR(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'STUDENT(STUDENT_ID INT,STUDENT_NAME VARCHAR(20),STUDENT_CODE VARCHAR(20))' at line 1
+mysql> CREATE STUDENT(STUDENT_ID INT,STUDENT_NAME VARCHAR(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'STUDENT(STUDENT_ID INT,STUDENT_NAME VARCHAR(20))' at line 1
+mysql> CREATE TABLE STUDENT(STUDENT_ID INT,STUDENT_NAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | YES  |     | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT ADD STUDENT_CODE VARCHAR(20);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | YES  |     | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_CODE | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME)VALUES(101,'A'),(102,'B');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+--------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_CODE |
++------------+--------------+--------------+
+|        101 | A            | NULL         |
+|        102 | B            | NULL         |
++------------+--------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE STUDENT SET STUDENT_CODE ='IIT1ST' WHERE STUDENT_ID =102;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+--------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_CODE |
++------------+--------------+--------------+
+|        101 | A            | NULL         |
+|        102 | B            | IIT1ST       |
++------------+--------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT DROP COLUMN;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE STUDENT DROP COLUMN STUDENT_CODE;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | YES  |     | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT ADD CONSTRAINT pk_student_id PRIMARY KEY(STUDENT_ID);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | NO   | PRI | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME)VALUES(101,'C');
+ERROR 1062 (23000): Duplicate entry '101' for key 'student.PRIMARY'
+mysql> CREATE TABLE EMPLOYEE (EMPLOYEEID INT,EMPLOYEENAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(234,'QWER');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(123,'YUIO');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT *FROM EMPLOYEE;
++------------+--------------+
+| EMPLOYEEID | EMPLOYEENAME |
++------------+--------------+
+|        234 | QWER         |
+|        123 | YUIO         |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD CONSTRAINT pk_employeeid PRIMARY KEY(EMPLOYEEID);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEE ADD STUDENTID VARCHAR(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENTID    | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *FROM EMPLOYEE;
++------------+--------------+-----------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENTID |
++------------+--------------+-----------+
+|        123 | YUIO         | NULL      |
+|        234 | QWER         | NULL      |
++------------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD STUDENT_ID VARCHAR(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM EMPLOYEE;
++------------+--------------+-----------+------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENTID | STUDENT_ID |
++------------+--------------+-----------+------------+
+|        123 | YUIO         | NULL      | NULL       |
+|        234 | QWER         | NULL      | NULL       |
++------------+--------------+-----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE employees
+    -> DROP COLUMN birthdate;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.employees' doesn't exist
+mysql> ALTER TABLE EMPLOYEE DROP COLUMN STUDENTID;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM EMPLOYEE;
++------------+--------------+------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID |
++------------+--------------+------------+
+|        123 | YUIO         | NULL       |
+|        234 | QWER         | NULL       |
++------------+--------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD COLUMN STUDENTID INT,ADD CONSTRAINT fk_studentid FOREIGN KEY(STUDENT_ID) REFERENCES STUDENT(STUDENT_ID);
+ERROR 3780 (HY000): Referencing column 'STUDENT_ID' and referenced column 'STUDENT_ID' in foreign key constraint 'fk_studentid' are incompatible.
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE DROP COLUMN STUDENT_ID;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEE ADD STUDENT_ID INT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  ALTER TABLE EMPLOYEE ADD COLUMN STUDENTID INT,ADD CONSTRAINT fk_studentid FOREIGN KEY(STUDENT_ID) REFERENCES STUDENT(STUDENT_ID);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | int         | YES  | MUL | NULL    |       |
+| STUDENTID    | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE DROP COLUMN STUDENTID;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | int         | YES  | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | NO   | PRI | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT ADD CONSTRAINT pk_student_id PRIMARY KEY(STUDENT_ID);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | int         | YES  | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> UPDATE EMPLOYEE SET STUDENT_ID=104 WHERE EMPLOYEEID=123;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`iit_14_th_batch`.`employee`, CONSTRAINT `fk_studentid` FOREIGN KEY (`STUDENT_ID`) REFERENCES `student` (`STUDENT_ID`))
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID |
++------------+--------------+------------+
+|        123 | YUIO         |       NULL |
+|        234 | QWER         |       NULL |
++------------+--------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET STUDENT_ID=101 WHERE EMPLOYEEID=123;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID |
++------------+--------------+------------+
+|        123 | YUIO         |        101 |
+|        234 | QWER         |       NULL |
++------------+--------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE TEST(TESTID INT,TESTNAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE TEST;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE TEST(TESTNAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE TEST ADD COLUMN TESTID INT,CONSTRAINT pk_TESTID PRIMARY KEY(TESTID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CONSTRAINT pk_TESTID PRIMARY KEY(TESTID)' at line 1
+mysql> ALTER TABLE TEST ADD COLUMN TESTID INT,ADD CONSTRAINT pk_TESTID PRIMARY KEY(TESTID);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC TEST;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| TESTNAME | varchar(20) | YES  |     | NULL    |       |
+| TESTID   | int         | NO   | PRI | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE DROP COLUMN TESTID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DROP COLUMN TESTID' at line 1
+mysql> ALTER TABLE TESTID DROP COLUMN TESTID;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.testid' doesn't exist
+mysql> ALTER TABLE TEST DROP COLUMN TESTID;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE TEST ADD COLUMN TESTID INT PRIMARY KEY;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC TEST;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| TESTNAME | varchar(20) | YES  |     | NULL    |       |
+| TESTID   | int         | NO   | PRI | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE TEST DROP COLUMN TESTID;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  ALTER TABLE TEST ADD COLUMN TESTID INT,ADD CONSTRAINT pk_TESTID PRIMARY KEY(TESTID);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC TEST;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| TESTNAME | varchar(20) | YES  |     | NULL    |       |
+| TESTID   | int         | NO   | PRI | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO TEST( TESTNAME,TESTID) VALUES(111,'Z'),(222,'S');
+ERROR 1366 (HY000): Incorrect integer value: 'Z' for column 'TESTID' at row 1
+mysql> INSERT INTO TEST( TESTID,TESTNAME) VALUES(111,'Z'),(222,'S');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM TEST;
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE STUDENT1(STUDENT_ID INT,STUDENT_NAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE STUDENT1 ADD CONSTRAINT fk_student_id PRIMARY KEY(STUDENT_ID,STUDENT_NAME);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT1;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | NO   | PRI | NULL    |       |
+| STUDENT_NAME | varchar(20) | NO   | PRI | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_iit_14_th_batch |
++---------------------------+
+| book                      |
+| employee                  |
+| student                   |
+| student1                  |
+| test                      |
++---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID |
++------------+--------------+------------+
+|        123 | YUIO         |        101 |
+|        234 | QWER         |       NULL |
++------------+--------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT EMPLOYEEID,EMPLOYEENAME, s.STUDENT_ID,STUDENT_NAME FROM STUDENT as s,EMPLOYEE as e;
++------------+--------------+------------+--------------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | STUDENT_NAME |
++------------+--------------+------------+--------------+
+|        123 | YUIO         |        102 | B            |
+|        123 | YUIO         |        101 | A            |
+|        234 | QWER         |        102 | B            |
+|        234 | QWER         |        101 | A            |
++------------+--------------+------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST;
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE TEST1(TESTID INT,TESTNAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM TEST1;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO TEST1(TESTID,TESTNAME) SELECT TESTID, TESTNAME FROM TEST;
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM TEST1;
++--------+----------+
+| TESTID | TESTNAME |
++--------+----------+
+|    111 | Z        |
+|    222 | S        |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> NOTEE;
