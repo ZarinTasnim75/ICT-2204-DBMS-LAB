@@ -1,0 +1,514 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| iit_14_th_batch    |
+| information_schema |
+| lab_quiz_01_1957   |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> use iit_14_th_batch;
+Database changed
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_iit_14_th_batch |
++---------------------------+
+| book                      |
+| employee                  |
+| student                   |
+| student1                  |
+| test                      |
+| test1                     |
++---------------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT (SELECT AVG(SALARY) FROM EMPLOYEE WHERE EMPLOYEEID=145)*5)/100 AS DISCOUNT FROM EMPLOYEE WHERE EMPLOYEEID=145;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')/100 AS DISCOUNT FROM EMPLOYEE WHERE EMPLOYEEID=145' at line 1
+mysql> SELECT (((SELECT AVG(SALARY) FROM EMPLOYEE WHERE EMPLOYEEID=145)*5)/100) AS DISCOUNT FROM EMPLOYEE WHERE EMPLOYEEID=145;
++-------------+
+| DISCOUNT    |
++-------------+
+| 30.00000000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT (((SELECT AVG(SALARY) FROM EMPLOYEE WHERE EMPLOYEEID=145)*5)/100) AS DISCOUNT,EMPLOYEENAME FROM EMPLOYEE WHERE EMPLOYEEID=145;
++-------------+--------------+
+| DISCOUNT    | EMPLOYEENAME |
++-------------+--------------+
+| 30.00000000 | ASD          |
++-------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT (((SELECT AVG(SALARY) FROM EMPLOYEE)*5)/100) AS DISCOUNT,EMPLOYEENAME FROM EMPLOYEE WHERE EMPLOYEEID=145;
++--------------+--------------+
+| DISCOUNT     | EMPLOYEENAME |
++--------------+--------------+
+| 191.75000000 | ASD          |
++--------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT (((SELECT AVG(SALARY) FROM EMPLOYEE)*5)/100) AS DISCOUNT,EMPLOYEENAME FROM EMPLOYEE WHERE EMPLOYEEID=145,234;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',234' at line 1
+mysql> SELECT * FROM (SELECT EMPLOYEEID,EMPLOYEENAME FROM EMPLOYEE) AS DUMMY_TABLE;
++------------+--------------+
+| EMPLOYEEID | EMPLOYEENAME |
++------------+--------------+
+|        123 | YUIO         |
+|        140 | AGSD         |
+|        143 | FD           |
+|        144 | GSD          |
+|        145 | ASD          |
+|        150 | WER          |
+|        151 | WDER         |
+|        154 | DER          |
+|        234 | QWER         |
+|       1045 | SDS          |
++------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM (SELECT EMPLOYEEID,EMPLOYEENAME FROM EMPLOYEE) AS DUMMY_TABLE WHERE D.EMPLOYEEID=145;
+ERROR 1054 (42S22): Unknown column 'D.EMPLOYEEID' in 'where clause'
+mysql> SELECT * FROM (SELECT EMPLOYEEID,EMPLOYEENAME FROM EMPLOYEE) AS DUMMY_TABLE WHERE DUMMY_TABLE.EMPLOYEEID=145;
++------------+--------------+
+| EMPLOYEEID | EMPLOYEENAME |
++------------+--------------+
+|        145 | ASD          |
++------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM DUMMY_TABLE;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.dummy_table' doesn't exist
+mysql> SELECT * FROM (SELECT EMPLOYEEID,EMPLOYEENAME FROM EMPLOYEE) AS D WHERE D.EMPLOYEEID=145;
++------------+--------------+
+| EMPLOYEEID | EMPLOYEENAME |
++------------+--------------+
+|        145 | ASD          |
++------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID IN (SELECT STUDENT_ID FROM EMPLOYEE);
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENTID =(SELECT STUDENTID FROM STUDENT GROUP BY STUDENTID HAVING COUNT(STUDENTID=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT * FROM STUDENT WHERE STUDENTID =(SELECT STUDENTID FROM EMPLOYEE GROUP BY STUDENTID HAVING COUNT(STUDENTID)=1);
+ERROR 1054 (42S22): Unknown column 'STUDENTID' in 'where clause'
+mysql> SELECT * FROM STUDENT WHERE STUDENTID =(SELECT STUDENTID FROM EMPLOYEE GROUP BY STUDENTID HAVING COUNT(STUDENT_ID)=1);
+ERROR 1054 (42S22): Unknown column 'STUDENTID' in 'where clause'
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID =(SELECT STUDENT_ID FROM EMPLOYEE GROUP BY STUDENT_ID HAVING COUNT(STUDENT_ID)=1);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID =(SELECT STUDENT_ID FROM EMPLOYEE GROUP BY STUDENT_ID HAVING COUNT(STUDENT_ID)=99);
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID =(SELECT STUDENT_ID FROM EMPLOYEE GROUP BY STUDENT_ID HAVING COUNT(STUDENT_ID)>1);
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
++------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM TEMP
+    -> ;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.temp' doesn't exist
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_iit_14_th_batch |
++---------------------------+
+| book                      |
+| employee                  |
+| student                   |
+| student1                  |
+| test                      |
+| test1                     |
++---------------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST WHERE (TESTID,TESTNAME) IN (SELECT TESTID,TESTNAME FROM TEST1);
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+2 rows in set (0.02 sec)
+
+mysql> SELECT * FROM TEST;
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST1;
++--------+----------+
+| TESTID | TESTNAME |
++--------+----------+
+|    111 | Z        |
+|    222 | S        |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES('YYU',13);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM TEST;
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| YYU      |     13 |
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST WHERE (TESTID,TESTNAME) IN (SELECT TESTID,TESTNAME FROM TEST1);
++----------+--------+
+| TESTNAME | TESTID |
++----------+--------+
+| Z        |    111 |
+| S        |    222 |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST1 WHERE (TESTID,TESTNAME) IN (SELECT TESTID,TESTNAME FROM TEST);
++--------+----------+
+| TESTID | TESTNAME |
++--------+----------+
+|    111 | Z        |
+|    222 | S        |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYYE;
+ERROR 1146 (42S02): Table 'iit_14_th_batch.employye' doesn't exist
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S INNER JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
++------------+--------------+------------+--------------+------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT VALUES(106, );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> INSERT INTO STUDENT VALUES(106,' ');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S NATURAL JOIN EMPLOYEE E ;
++------------+--------------+------------+--------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | SALARY |
++------------+--------------+------------+--------------+--------+
+|        101 | A            |        123 | YUIO         |    500 |
+|        101 | A            |        234 | QWER         |    500 |
+|        102 | B            |       1045 | SDS          |   4000 |
+|        103 | C            |        143 | FD           |   4000 |
+|        104 | D            |        145 | ASD          |    600 |
+|        105 | E            |        150 | WER          |    750 |
+|        106 |              |        140 | AGSD         |   6000 |
++------------+--------------+------------+--------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S CROSS JOIN EMPLOYEE E ;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        106 |              |        123 | YUIO         |        101 |    500 |
+|        105 | E            |        123 | YUIO         |        101 |    500 |
+|        104 | D            |        123 | YUIO         |        101 |    500 |
+|        103 | C            |        123 | YUIO         |        101 |    500 |
+|        102 | B            |        123 | YUIO         |        101 |    500 |
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        105 | E            |        140 | AGSD         |        106 |   6000 |
+|        104 | D            |        140 | AGSD         |        106 |   6000 |
+|        103 | C            |        140 | AGSD         |        106 |   6000 |
+|        102 | B            |        140 | AGSD         |        106 |   6000 |
+|        101 | A            |        140 | AGSD         |        106 |   6000 |
+|        106 |              |        143 | FD           |        103 |   4000 |
+|        105 | E            |        143 | FD           |        103 |   4000 |
+|        104 | D            |        143 | FD           |        103 |   4000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|        102 | B            |        143 | FD           |        103 |   4000 |
+|        101 | A            |        143 | FD           |        103 |   4000 |
+|        106 |              |        144 | GSD          |        108 |   5000 |
+|        105 | E            |        144 | GSD          |        108 |   5000 |
+|        104 | D            |        144 | GSD          |        108 |   5000 |
+|        103 | C            |        144 | GSD          |        108 |   5000 |
+|        102 | B            |        144 | GSD          |        108 |   5000 |
+|        101 | A            |        144 | GSD          |        108 |   5000 |
+|        106 |              |        145 | ASD          |        104 |    600 |
+|        105 | E            |        145 | ASD          |        104 |    600 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        103 | C            |        145 | ASD          |        104 |    600 |
+|        102 | B            |        145 | ASD          |        104 |    600 |
+|        101 | A            |        145 | ASD          |        104 |    600 |
+|        106 |              |        150 | WER          |        105 |    750 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        104 | D            |        150 | WER          |        105 |    750 |
+|        103 | C            |        150 | WER          |        105 |    750 |
+|        102 | B            |        150 | WER          |        105 |    750 |
+|        101 | A            |        150 | WER          |        105 |    750 |
+|        106 |              |        151 | WDER         |        107 |   7500 |
+|        105 | E            |        151 | WDER         |        107 |   7500 |
+|        104 | D            |        151 | WDER         |        107 |   7500 |
+|        103 | C            |        151 | WDER         |        107 |   7500 |
+|        102 | B            |        151 | WDER         |        107 |   7500 |
+|        101 | A            |        151 | WDER         |        107 |   7500 |
+|        106 |              |        154 | DER          |        109 |   9500 |
+|        105 | E            |        154 | DER          |        109 |   9500 |
+|        104 | D            |        154 | DER          |        109 |   9500 |
+|        103 | C            |        154 | DER          |        109 |   9500 |
+|        102 | B            |        154 | DER          |        109 |   9500 |
+|        101 | A            |        154 | DER          |        109 |   9500 |
+|        106 |              |        234 | QWER         |        101 |    500 |
+|        105 | E            |        234 | QWER         |        101 |    500 |
+|        104 | D            |        234 | QWER         |        101 |    500 |
+|        103 | C            |        234 | QWER         |        101 |    500 |
+|        102 | B            |        234 | QWER         |        101 |    500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        106 |              |       1045 | SDS          |        102 |   4000 |
+|        105 | E            |       1045 | SDS          |        102 |   4000 |
+|        104 | D            |       1045 | SDS          |        102 |   4000 |
+|        103 | C            |       1045 | SDS          |        102 |   4000 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
+|        101 | A            |       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------------+------------+--------+
+60 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
+|        106 |              |
++------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> DESC STUDENT;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| STUDENT_ID   | int         | NO   | PRI | NULL    |       |
+| STUDENT_NAME | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT(STUDENT_ID) VALUES(107);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
+|        106 |              |
+|        107 | NULL         |
++------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S LEFT JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        107 | NULL         |        151 | WDER         |        107 |   7500 |
++------------+--------------+------------+--------------+------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME) VALUES(107);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME) VALUES(107,);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> 
+mysql> 
+mysql> SELECT * FROM STUDENT S RIGHT JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|       NULL | NULL         |        144 | GSD          |        108 |   5000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        107 | NULL         |        151 | WDER         |        107 |   7500 |
+|       NULL | NULL         |        154 | DER          |        109 |   9500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S FULL  JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FULL  JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID' at line 1
+mysql> SELECT * FROM STUDENT S FULL OUTER JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FULL OUTER JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID' at line 1
+mysql> SELECT *
+    -> FROM STUDENT S
+    -> LEFT JOIN EMPLOYEE E
+    -> ON S.STUDENT_ID = E.STUDENT_ID
+    -> 
+    -> UNION
+    -> 
+    -> SELECT *
+    -> FROM STUDENT S
+    -> RIGHT JOIN EMPLOYEE E
+    -> ON S.STUDENT_ID = E.STUDENT_ID;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        107 | NULL         |        151 | WDER         |        107 |   7500 |
+|       NULL | NULL         |        144 | GSD          |        108 |   5000 |
+|       NULL | NULL         |        154 | DER          |        109 |   9500 |
++------------+--------------+------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT S LEFT JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID
+    -> 
+    -> UNION ALL
+    -> 
+    -> SELECT * FROM STUDENT S RIGHT JOIN EMPLOYEE E ON S.STUDENT_ID=E.STUDENT_ID;
++------------+--------------+------------+--------------+------------+--------+
+| STUDENT_ID | STUDENT_NAME | EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------------+------------+--------+
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        107 | NULL         |        151 | WDER         |        107 |   7500 |
+|        101 | A            |        123 | YUIO         |        101 |    500 |
+|        106 |              |        140 | AGSD         |        106 |   6000 |
+|        103 | C            |        143 | FD           |        103 |   4000 |
+|       NULL | NULL         |        144 | GSD          |        108 |   5000 |
+|        104 | D            |        145 | ASD          |        104 |    600 |
+|        105 | E            |        150 | WER          |        105 |    750 |
+|        107 | NULL         |        151 | WDER         |        107 |   7500 |
+|       NULL | NULL         |        154 | DER          |        109 |   9500 |
+|        101 | A            |        234 | QWER         |        101 |    500 |
+|        102 | B            |       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------------+------------+--------+
+18 rows in set (0.00 sec)
+
+mysql> NOTEE;
