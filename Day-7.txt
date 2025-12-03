@@ -1,0 +1,334 @@
+mysql> USE IIT_14_TH_BATCH;
+Database changed
+mysql> SELECT DATE("2017-06-15");
++--------------------+
+| DATE("2017-06-15") |
++--------------------+
+| 2017-06-15         |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE("2017-06-15") AS RANDOMDATE;
++------------+
+| RANDOMDATE |
++------------+
+| 2017-06-15 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%Y");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%Y") |
++--------------------------------+
+| 2017                           |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATEDIFF("2017-06-15","2017-06-25");
++-------------------------------------+
+| DATEDIFF("2017-06-15","2017-06-25") |
++-------------------------------------+
+|                                 -10 |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE('2017-06-15');
++--------------------+
+| DATE('2017-06-15') |
++--------------------+
+| 2017-06-15         |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%M");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%M") |
++--------------------------------+
+| June                           |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%D");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%D") |
++--------------------------------+
+| 15th                           |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%y");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%y") |
++--------------------------------+
+| 17                             |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%m");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%m") |
++--------------------------------+
+| 06                             |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT("2017-06-15","%d");
++--------------------------------+
+| DATE_FORMAT("2017-06-15","%d") |
++--------------------------------+
+| 15                             |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_ADD('2017-06-15',INTERVAL 10 DAY);
++----------------------------------------+
+| DATE_ADD('2017-06-15',INTERVAL 10 DAY) |
++----------------------------------------+
+| 2017-06-25                             |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_SUB('2017-06-15',INTERVAL 10 DAY);
++----------------------------------------+
+| DATE_SUB('2017-06-15',INTERVAL 10 DAY) |
++----------------------------------------+
+| 2017-06-05                             |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAY('2017-06-15');
++-------------------+
+| DAY('2017-06-15') |
++-------------------+
+|                15 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAY(CURDATE());
++----------------+
+| DAY(CURDATE()) |
++----------------+
+|             25 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYNAME('2017-06-15');
++-----------------------+
+| DAYNAME('2017-06-15') |
++-----------------------+
+| Thursday              |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(CURDATE());
++-----------------+
+| DATE(CURDATE()) |
++-----------------+
+| 2025-11-25      |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(CURTIME());
++-----------------+
+| DATE(CURTIME()) |
++-----------------+
+| 2025-11-25      |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(NOW());
++-------------+
+| DATE(NOW()) |
++-------------+
+| 2025-11-25  |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFMONTH('2017-06-15');
++--------------------------+
+| DAYOFMONTH('2017-06-15') |
++--------------------------+
+|                       15 |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFWEEK('2017-06-15');
++-------------------------+
+| DAYOFWEEK('2017-06-15') |
++-------------------------+
+|                       5 |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFMONTH(CURDATE());
++-----------------------+
+| DAYOFMONTH(CURDATE()) |
++-----------------------+
+|                    25 |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SYSDATE();
++---------------------+
+| SYSDATE()           |
++---------------------+
+| 2025-11-25 12:35:35 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFYEAR(CURDATE());
++----------------------+
+| DAYOFYEAR(CURDATE()) |
++----------------------+
+|                  329 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SYSDATE()+1;
++----------------+
+| SYSDATE()+1    |
++----------------+
+| 20251125123632 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SYSDATE()+'1';
++----------------+
+| SYSDATE()+'1'  |
++----------------+
+| 20251125123753 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT LENGTH('EDUCATION');
++---------------------+
+| LENGTH('EDUCATION') |
++---------------------+
+|                   9 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT INSTR('EDUCATION','A');
++------------------------+
+| INSTR('EDUCATION','A') |
++------------------------+
+|                      5 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT LCASE('EDUCATION');
++--------------------+
+| LCASE('EDUCATION') |
++--------------------+
+| education          |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT UCASE('EDUCAtion');
++--------------------+
+| UCASE('EDUCAtion') |
++--------------------+
+| EDUCATION          |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUBSTRING('EDUCATION',2,3);
++----------------------------+
+| SUBSTRING('EDUCATION',2,3) |
++----------------------------+
+| DUC                        |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT LPAD('EDUCATION',12,'$');
++--------------------------+
+| LPAD('EDUCATION',12,'$') |
++--------------------------+
+| $$$EDUCATION             |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT LPAD('EDUCATION',10,'$');
++--------------------------+
+| LPAD('EDUCATION',10,'$') |
++--------------------------+
+| $EDUCATION               |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT RPAD('EDUCATION',10,'$');
++--------------------------+
+| RPAD('EDUCATION',10,'$') |
++--------------------------+
+| EDUCATION$               |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD SALARY INT DEFAULT 500;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |    500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |    500 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET SALARY=4000 WHERE EMPLOYEEID=143;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET SALARY=4000 WHERE EMPLOYEEID=1045;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,CHAR) SAL FROM EMPLOYEE;
++--------------+------+
+| EMPLOYEENAME | SAL  |
++--------------+------+
+| YUIO         | 500  |
+| FD           | 4000 |
+| QWER         | 500  |
+| SDS          | 4000 |
++--------------+------+
+4 rows in set (0.00 sec)
+
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | int         | YES  | MUL | NULL    |       |
+| SALARY       | int         | YES  |     | 500     |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,CHAR)  FROM EMPLOYEE;
++--------------+----------------------+
+| EMPLOYEENAME | CONVERT(SALARY,CHAR) |
++--------------+----------------------+
+| YUIO         | 500                  |
+| FD           | 4000                 |
+| QWER         | 500                  |
+| SDS          | 4000                 |
++--------------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql> NOTEE;

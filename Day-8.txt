@@ -1,0 +1,487 @@
+mysql> USE IIT_14_TH_BATCH;
+Database changed
+mysql> DESC EMPLOYEE;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMPLOYEEID   | int         | NO   | PRI | NULL    |       |
+| EMPLOYEENAME | varchar(20) | YES  |     | NULL    |       |
+| STUDENT_ID   | int         | YES  | MUL | NULL    |       |
+| SALARY       | int         | YES  |     | 500     |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,CHAR) SAL FROM EMPLOYEE;
++--------------+------+
+| EMPLOYEENAME | SAL  |
++--------------+------+
+| YUIO         | 500  |
+| FD           | 4000 |
+| QWER         | 500  |
+| SDS          | 4000 |
++--------------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT CONVERT('2003-10-19',DATE);
++----------------------------+
+| CONVERT('2003-10-19',DATE) |
++----------------------------+
+| 2003-10-19                 |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,DECIMAL) SAL FROM EMPLOYEE;
++--------------+------+
+| EMPLOYEENAME | SAL  |
++--------------+------+
+| YUIO         |  500 |
+| FD           | 4000 |
+| QWER         |  500 |
+| SDS          | 4000 |
++--------------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,DECIMAL(12,4)) SAL FROM EMPLOYEE;
++--------------+-----------+
+| EMPLOYEENAME | SAL       |
++--------------+-----------+
+| YUIO         |  500.0000 |
+| FD           | 4000.0000 |
+| QWER         |  500.0000 |
+| SDS          | 4000.0000 |
++--------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,DECIMAL(2,4)) SAL FROM EMPLOYEE;
+ERROR 1427 (42000): For float(M,D), double(M,D) or decimal(M,D), M must be >= D (column '').
+mysql> SELECT EMPLOYEENAME, CONVERT(SALARY,DECIMAL(4,2)) SAL FROM EMPLOYEE;
++--------------+-------+
+| EMPLOYEENAME | SAL   |
++--------------+-------+
+| YUIO         | 99.99 |
+| FD           | 99.99 |
+| QWER         | 99.99 |
+| SDS          | 99.99 |
++--------------+-------+
+4 rows in set, 4 warnings (0.00 sec)
+
+mysql> SELECT ABS(-75);
++----------+
+| ABS(-75) |
++----------+
+|       75 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MOD(8,5);
++----------+
+| MOD(8,5) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT FLOOR(7.6);
++------------+
+| FLOOR(7.6) |
++------------+
+|          7 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CEIL(7.6);
++-----------+
+| CEIL(7.6) |
++-----------+
+|         8 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT POWER(2,4);
++------------+
+| POWER(2,4) |
++------------+
+|         16 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT ROUND(7.6);
++------------+
+| ROUND(7.6) |
++------------+
+|          8 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SQRT(7.6);
++-------------------+
+| SQRT(7.6)         |
++-------------------+
+| 2.756809750418044 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY> ALL(SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID>145;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> 
+mysql> SELECT * FROM EMPLOYEE ;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY> ALL(SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID>145);
+Empty set (0.00 sec)
+
+mysql> SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID>145;
++--------+
+| SALARY |
++--------+
+|    500 |
+|   4000 |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY> ALL(SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID>123);
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY> ALL(SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID=123);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>= ALL(SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID>123);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID > 145);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID = 123);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >143);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID =143);
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE ;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(145,'ASD',104,600),(150,'WER',105,750);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY>ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >143);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(140,'AGSD',106,6000),(151,'WDER',107,7500);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE ;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY BETWEEN 4000 AND 7000;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY IN (4000,5000);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY IN (4000,7000);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES(144,'GSD',108,5000),(154,'DER',109,9500);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY IN (4000,7000);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        143 | FD           |        103 |   4000 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE ;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY IN (4000,7500,6000);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        151 | WDER         |        107 |   7500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE '%Y';
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE 'Y%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
++------------+--------------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE '_Y%';
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE '_G%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        140 | AGSD         |        106 |   6000 |
++------------+--------------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE '__E%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        151 | WDER         |        107 |   7500 |
+|        234 | QWER         |        101 |    500 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE '___R%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        151 | WDER         |        107 |   7500 |
+|        234 | QWER         |        101 |    500 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE 'A_%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        140 | AGSD         |        106 |   6000 |
+|        145 | ASD          |        104 |    600 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE EMPLOYEENAME LIKE 'A_S%';
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        140 | AGSD         |        106 |   6000 |
++------------+--------------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY=ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >143);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY=IN (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >143);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IN (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >143)' at line 1
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY=ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >150);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        101 | A            |
+|        102 | B            |
+|        103 | C            |
+|        104 | D            |
+|        105 | E            |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        140 | AGSD         |        106 |   6000 |
+|        143 | FD           |        103 |   4000 |
+|        144 | GSD          |        108 |   5000 |
+|        145 | ASD          |        104 |    600 |
+|        150 | WER          |        105 |    750 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE STUDENT_ID = 101;
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        234 | QWER         |        101 |    500 |
++------------+--------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID = (SELECT STUDENT_ID FROM EMPLOYEE WHERE SALARY=5000);
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID = (SELECT STUDENT_ID FROM EMPLOYEE WHERE SALARY=600);
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        104 | D            |
++------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT WHERE STUDENT_ID IN (SELECT STUDENT_ID FROM EMPLOYEE WHERE SALARY=4000);
++------------+--------------+
+| STUDENT_ID | STUDENT_NAME |
++------------+--------------+
+|        102 | B            |
+|        103 | C            |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY= SOME (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >150);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE WHERE SALARY= ANY (SELECT SALARY FROM EMPLOYEE WHERE EMPLOYEEID >150);
++------------+--------------+------------+--------+
+| EMPLOYEEID | EMPLOYEENAME | STUDENT_ID | SALARY |
++------------+--------------+------------+--------+
+|        123 | YUIO         |        101 |    500 |
+|        143 | FD           |        103 |   4000 |
+|        151 | WDER         |        107 |   7500 |
+|        154 | DER          |        109 |   9500 |
+|        234 | QWER         |        101 |    500 |
+|       1045 | SDS          |        102 |   4000 |
++------------+--------------+------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> NOTEE;
